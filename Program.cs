@@ -1,39 +1,35 @@
-using Microsoft.EntityFrameworkCore;
+uusing Microsoft.EntityFrameworkCore;
 using RSConnect.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Lê a connection string da variável de ambiente do Railway
-var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
-
-// Registra o DbContext usando PostgreSQL
+// CONFIGURAÇÃO DO POSTGRESQL
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connectionString)
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// Ativa controllers
-builder.Services.AddControllers();
-
-// Ativa CORS (para permitir acesso do front-end)
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
+// SWAGGER
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Rota para abrir o HTML de cadastro
-app.MapGet("/cadastro-usuario", async context =>
+// APLICA MIGRATIONS AUTOMATICAMENTE AO INICIAR (Railway, Azure, AWS, etc.)
+using (var scope = app.Services.CreateScope())
 {
-    await context.Response.SendFileAsync(Path.Combine("cadastro", "usuario.html"));
-});
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 
-// Ativa as rotas dos controllers
+// SWAGGER EM DESENVOLVIMENTO
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
 app.MapControllers();
 
 app.Run();
