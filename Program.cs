@@ -1,4 +1,4 @@
-uusing Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RSConnect.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,14 +14,13 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// APLICA MIGRATIONS AUTOMATICAMENTE AO INICIAR (Railway, Azure, AWS, etc.)
+// APLICA MIGRATIONS AUTOMATICAMENTE AO INICIAR
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
 }
 
-// SWAGGER EM DESENVOLVIMENTO
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
