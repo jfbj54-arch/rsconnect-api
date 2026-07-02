@@ -3,32 +3,32 @@ using rsconnect_api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add DbContext with Railway connection string
+// Add DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// Add controllers
 builder.Services.AddControllers();
-
-// Add Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Apply migrations automatically
+// Apply migrations
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
 }
 
-// Enable Swagger in production
+// Swagger
 app.UseSwagger();
 app.UseSwaggerUI();
 
-// Map controllers
 app.MapControllers();
+
+// ⭐ FORÇAR A API A USAR A PORTA DO RAILWAY
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+app.Urls.Add($"http://0.0.0.0:{port}");
 
 app.Run();
