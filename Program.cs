@@ -3,7 +3,10 @@ using rsconnect_api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add DbContext
+// Force Kestrel to listen on the Railway PORT
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
@@ -21,14 +24,9 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
 }
 
-// Swagger
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.MapControllers();
-
-// ⭐ FORÇAR A API A USAR A PORTA DO RAILWAY
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-app.Urls.Add($"http://0.0.0.0:{port}");
 
 app.Run();
