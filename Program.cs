@@ -26,12 +26,9 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
 }
 
-// Swagger
 app.UseSwagger();
 app.UseSwaggerUI();
 
-// Map controllers
 app.MapControllers();
 
-// Run app
 app.Run();
