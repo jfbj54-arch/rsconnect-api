@@ -1,34 +1,34 @@
- using Microsoft.EntityFrameworkCore;
-using RSConnect.API.Data;
+using Microsoft.EntityFrameworkCore;
+using rsconnect_api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// CONFIGURAÇÃO DO POSTGRESQL
+// Add DbContext with Railway connection string
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// SWAGGER
+// Add controllers
+builder.Services.AddControllers();
+
+// Add Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// APLICA MIGRATIONS AUTOMATICAMENTE AO INICIAR
+// Apply migrations automatically
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
 }
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Enable Swagger in production
+app.UseSwagger();
+app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
-
+// Map controllers
 app.MapControllers();
 
 app.Run();
