@@ -87,7 +87,7 @@ namespace RSConnect.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProfissionaisServicos",
+                name: "ProfissionalServicos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -97,15 +97,15 @@ namespace RSConnect.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProfissionaisServicos", x => x.Id);
+                    table.PrimaryKey("PK_ProfissionalServicos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProfissionaisServicos_Profissionais_ProfissionalId",
+                        name: "FK_ProfissionalServicos_Profissionais_ProfissionalId",
                         column: x => x.ProfissionalId,
                         principalTable: "Profissionais",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProfissionaisServicos_Servicos_ServicoId",
+                        name: "FK_ProfissionalServicos_Servicos_ServicoId",
                         column: x => x.ServicoId,
                         principalTable: "Servicos",
                         principalColumn: "Id",
@@ -113,13 +113,13 @@ namespace RSConnect.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProfissionaisServicos_ProfissionalId",
-                table: "ProfissionaisServicos",
+                name: "IX_ProfissionalServicos_ProfissionalId",
+                table: "ProfissionalServicos",
                 column: "ProfissionalId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProfissionaisServicos_ServicoId",
-                table: "ProfissionaisServicos",
+                name: "IX_ProfissionalServicos_ServicoId",
+                table: "ProfissionalServicos",
                 column: "ServicoId");
         }
 
@@ -133,7 +133,7 @@ namespace RSConnect.API.Migrations
                 name: "Avaliacoes");
 
             migrationBuilder.DropTable(
-                name: "ProfissionaisServicos");
+                name: "ProfissionalServicos");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");

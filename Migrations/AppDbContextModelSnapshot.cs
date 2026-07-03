@@ -110,7 +110,7 @@ namespace RSConnect.API.Migrations
 
                     b.HasIndex("ServicoId");
 
-                    b.ToTable("ProfissionaisServicos");
+                    b.ToTable("ProfissionalServicos");
                 });
 
             modelBuilder.Entity("RSConnect.API.Models.Servico", b =>

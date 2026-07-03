@@ -12,7 +12,7 @@ using RSConnect.API.Data;
 namespace RSConnect.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260701211445_Initial")]
+    [Migration("20260703160635_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -113,7 +113,7 @@ namespace RSConnect.API.Migrations
 
                     b.HasIndex("ServicoId");
 
-                    b.ToTable("ProfissionaisServicos");
+                    b.ToTable("ProfissionalServicos");
                 });
 
             modelBuilder.Entity("RSConnect.API.Models.Servico", b =>
