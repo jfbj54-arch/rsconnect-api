@@ -11,5 +11,10 @@ namespace RSConnect.API.Data
         }
 
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Profissional> Profissionais { get; set; }
+        public DbSet<Servico> Servicos { get; set; }
+        public DbSet<ProfissionalServico> ProfissionalServicos { get; set; }
+        public DbSet<Agendamento> Agendamentos { get; set; }
+        public DbSet<Avaliacao> Avaliacoes { get; set; }
     }
 }
