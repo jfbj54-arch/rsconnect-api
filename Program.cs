@@ -3,32 +3,23 @@ using RSConnect.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Bind Kestrel to Railway PORT
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
-
-// Add DbContext
+// PostgreSQL + Railway
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add services
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Apply migrations automatically
+// Executa migrations automaticamente no Railway
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
 }
 
-app.UseSwagger();
-app.UseSwaggerUI();
-
 app.MapControllers();
 
+// IMPORTANTE: NÃO DEFINA PORTA MANUALMENTe
 app.Run();
+
